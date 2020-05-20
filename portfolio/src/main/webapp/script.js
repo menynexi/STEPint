@@ -13,15 +13,16 @@
 // limitations under the License.
 
 /**
- * Adds a random greeting to the page.
+ * Adds a random suggestion by many to the page.
  */
 function addRandomGreeting() {
-  const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!'];
+  const greetings = 
+    ['You should Read solo leveling', 'You should watch Tower of God', 'Watch Food Wars!!', '#notsponsored'];
 
-  // Pick a random greeting.
+  // Pick a random suggestion at random 
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
+  //pick a 
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
