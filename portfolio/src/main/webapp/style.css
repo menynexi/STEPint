@@ -1,5 +1,27 @@
-#background{
-    background-color: #0088cc;
+/*
+    color theme
+    strong red :: #771100;
+    orange :: #FF9900;
+    light orange :: #FF9900;
+    grey:: #999999;
+    very light grey :: #CCCCCC;
+*/
+
+body, html{
+    height:100%;
+    width: 100%;
+    background-color: #771100;
+}
+
+h1, h2, h3{
+    color:  #FF9900;
+    text-align: center;
+}
+
+
+p{
+    color: #CCCCCC;
+    text-align: center;
 }
 
 #content {
@@ -10,4 +32,52 @@
 
 #greeting-container {
   margin-top: 20px;
+}
+
+.img-1{
+    position: relative;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.img-1{
+    background-image: url(images/selfpicture.jpg);
+    min-height: 100%;
+}
+
+.parallax{
+    min-height: 100%;
+    min-width: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/*you cna place size restrictions so that your website can adapt to phones and tablets*/
+@media only screen and (max-device-width: 1366px){
+  .parallax {
+    background-attachment: scroll;
+   }
+}
+
+.caption{
+    position:absolute;
+    left: 0;
+    top: 20%;
+    width:100%;
+    text-align: center;
+}
+
+.caption spam.border{
+    color: #CCCCCC;
+    padding: 18px;
+    font-size: 45px;
+}
+
+.wrap{
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
