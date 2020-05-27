@@ -46,15 +46,6 @@ p{
     min-height: 100%;
 }
 
-.parallax{
-    min-height: 100%;
-    min-width: 100%;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
 /*you cna place size restrictions so that your website can adapt to phones and tablets*/
 @media only screen and (max-device-width: 1366px){
   .parallax {
