@@ -7,27 +7,26 @@
     very light grey :: #CCCCCC;
 */
 
-body, html{
-    height:100%;
-    width: 100%;
-    background-color: #771100;
+body, html  {
+  height:100%;
+  background-color: #771100;
 }
 
-h1, h2, h3{
-    color:  #FF9900;
-    text-align: center;
+h1, h2, h3  {
+  color:#ff9900;
+  text-align: center;
 }
 
 
-p{
-    color: #CCCCCC;
-    text-align: center;
+p  {
+  color: #cccccc;
+  text-align: center;
 }
 
-table, tr, td{
-    text-align: center;
-    align-content: center;
-    margin-right: 15
+table, tr, td  {
+  text-align: center;
+  align-content: center;
+  margin-right: 15
 }
 
 #content {
@@ -40,65 +39,67 @@ table, tr, td{
   margin-top: 20px;
 }
 
-.img-1,.img-2{
-    position: relative;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+.img-1,.img-2  {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.img-1{
-    background-image: url(images/selfpicture.jpg);
-    min-height: 100%;
+.img-1  {
+  background-image: url(images/selfpicture.jpg);
+  min-height: 100%;
 }
 
-.img-2{
-    background-image: url(images/thought-catalog.jpg);
-    min-height: 30%;
+.img-2  {
+  background-image: url(images/thought-catalog.jpg);
+  min-height: 30%;
 }
 
 
 /*you cna place size restrictions so that your website can adapt to phones and tablets*/
-@media only screen and (max-device-width: 1366px){
+@media only screen and (max-device-width: 1366px)  {
   .parallax {
     background-attachment: scroll;
    }
 }
 
-.caption{
-    position:absolute;
-    left: 0;
-    top: 20%;
-    width:100%;
-    text-align: center;
+.caption  {
+  position:absolute;
+  left: 0;
+  top: 20%;
+  width:100%;
+  text-align: center;
 }
 
-.caption spam.border{
-    color: #CCCCCC;
-    padding: 18px;
-    font-size: 45px;
+.caption spam.border  {
+  color: #cccccc;
+  padding: 18px;
+  font-size: 45px;
 }
 
-.wrap{
+.wrap  {
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
 }
 
 /*css classes used in gallery*/
-.row {
+.row  {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap; 
   flex-wrap: wrap;
   padding: 0 4px;
+  margin-left: 5%;
+  margin-right:5%;
 }
-
+/*colum is devided into 3 equal pieces*/
 .column {
-  -ms-flex: 30%;
-  flex: 30%;
-  max-width: 30%;
+  -ms-flex: 32%;
+  flex: 32%;
+  max-width: 32%;
   padding: 0 4px;
 }
 
