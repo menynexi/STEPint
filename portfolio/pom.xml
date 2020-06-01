@@ -47,10 +47,10 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>2.2.0</version>
         <!-- TODO: uncomment configuration block and provide project ID. -->
-        <!-- <configuration>
-            <deploy.projectId>YOUR_PROJECT_ID_HERE</deploy.projectId>
+        <configuration>
+            <deploy.projectId>mangutierrez-step-20202</deploy.projectId>
             <deploy.version>1</deploy.version>
-        </configuration> -->
+        </configuration>
       </plugin>
     </plugins>
   </build>
