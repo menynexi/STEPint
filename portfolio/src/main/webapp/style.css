@@ -7,22 +7,22 @@
     very light grey :: #CCCCCC;
 */
 
-body, html  {
+body, html {
   height:100%;
   background-color: #771100;
 }
 
-h1, h2, h3  {
+h1, h2, h3 {
   color:#ff9900;
   text-align: center;
 }
 
-p  {
+p {
   color: #cccccc;
   text-align: center;
 }
 
-table, tr, td  {
+table, tr, td {
   text-align: center;
   align-content: center;
   margin-right: 15
@@ -32,7 +32,7 @@ table, tr, td  {
     height: 300px
 }
 
-.img-1,.img-2  {
+.img-1,.img-2 {
   position: relative;
   background-attachment: fixed;
   background-position: center;
@@ -40,17 +40,17 @@ table, tr, td  {
   background-size: cover;
 }
 
-.img-1  {
+.img-1 {
   background-image: url(images/selfpicture.jpg);
   min-height: 100%;
 }
 
-.img-2  {
+.img-2 {
   background-image: url(images/thought-catalog.jpg);
   min-height: 30%;
 }
 
-.step-caption  {
+.step-caption {
   position:absolute;
   left: 0;
   top: 20%;
@@ -58,13 +58,13 @@ table, tr, td  {
   text-align: center;
 }
 
-.step-caption spam.step-border  {
+.step-caption spam.step-border {
   color: #cccccc;
   padding: 18px;
   font-size: 45px;
 }
 
-.step-wrap  {
+.step-wrap {
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
@@ -75,7 +75,7 @@ table, tr, td  {
     margin-right: 20%;
 }
 
-.step-row  {
+.step-row {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap; 
@@ -104,7 +104,7 @@ table, tr, td  {
     font-size: 16px;
 }
 
-.step-table-align  {
+.step-table-align {
     margin-top:10px;
     margin-left:auto;
     margin-right:auto;
@@ -115,13 +115,18 @@ table, tr, td  {
     width: 100px;
 }
 
-/*you cna place size restrictions so that your website can adapt to phones and tablets*/
+#comment-container{
+    color:white;
+    font-size: 16px;
+}
+
+/*you can place size restrictions so that your website can adapt to phones and tablets*/
 @media only screen and (max-device-width: 1366px)  {
-  .img-1, .img-2  { 
+  .img-1, .img-2 { 
     background-attachment: scroll;
   }
 
-  .step-caption spam.border  {
+  .step-caption spam.border {
     font-size: 10px;
   }
 }
@@ -134,7 +139,7 @@ table, tr, td  {
     max-width: 60%;
   }
 
-  .step-caption spam.border  {
+  .step-caption spam.border {
     font-size: 20px;
   }
 }
@@ -147,7 +152,7 @@ table, tr, td  {
     max-width: 100%;
   }
 
-  .step-caption spam.border  {
+  .step-caption spam.border {
     font-size: 14px;
   }
 }
