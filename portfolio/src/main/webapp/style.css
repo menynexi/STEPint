@@ -7,39 +7,32 @@
     very light grey :: #CCCCCC;
 */
 
-body, html  {
+body, html {
   height:100%;
   background-color: #771100;
 }
 
-h1, h2, h3  {
+h1, h2, h3 {
   color:#ff9900;
   text-align: center;
 }
 
-
-p  {
+p {
   color: #cccccc;
   text-align: center;
 }
 
-table, tr, td  {
+table, tr, td {
   text-align: center;
   align-content: center;
   margin-right: 15
 }
 
-#content {
-  margin-left: auto;
-  margin-right: auto;
-  width: 650px;
+.step-height {
+    height: 300px
 }
 
-#greeting-container {
-  margin-top: 20px;
-}
-
-.img-1,.img-2  {
+.img-1,.img-2 {
   position: relative;
   background-attachment: fixed;
   background-position: center;
@@ -47,25 +40,17 @@ table, tr, td  {
   background-size: cover;
 }
 
-.img-1  {
+.img-1 {
   background-image: url(images/selfpicture.jpg);
   min-height: 100%;
 }
 
-.img-2  {
+.img-2 {
   background-image: url(images/thought-catalog.jpg);
   min-height: 30%;
 }
 
-
-/*you cna place size restrictions so that your website can adapt to phones and tablets*/
-@media only screen and (max-device-width: 1366px)  {
-  .parallax {
-    background-attachment: scroll;
-   }
-}
-
-.caption  {
+.step-caption {
   position:absolute;
   left: 0;
   top: 20%;
@@ -73,20 +58,24 @@ table, tr, td  {
   text-align: center;
 }
 
-.caption spam.border  {
+.step-caption spam.step-border {
   color: #cccccc;
   padding: 18px;
   font-size: 45px;
 }
 
-.wrap  {
+.step-wrap {
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
 }
 
-/*css classes used in gallery*/
-.row  {
+.step-align {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.step-row {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap; 
@@ -96,43 +85,75 @@ table, tr, td  {
   margin-right:auto;
 }
 
-
-
-/*colum is devided into 3 equal pieces for the gallery*/
-.column {
+.step-column {
   -ms-flex: 32%;
   flex: 32%;
   max-width: 32%;
   padding: 0 4px;
 }
 
-.column img {
+.step-column img {
   margin-top: 8px;
   vertical-align: middle;
   width: 100%;
 }
 
+.step-label {
+    background-color: #FF9900;
+    color:#cccccc;
+    font-size: 16px;
+}
+
+.step-table-align {
+    margin-top:10px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.step-table-align img {
+    height: 100px;
+    width: 100px;
+}
+
+#comment-container{
+    color:white;
+    font-size: 16px;
+}
+
+/*you can place size restrictions so that your website can adapt to phones and tablets*/
+@media only screen and (max-device-width: 1366px)  {
+  .img-1, .img-2 { 
+    background-attachment: scroll;
+  }
+
+  .step-caption spam.border {
+    font-size: 10px;
+  }
+}
 
 /* Responsive layout - makes a two column-layout instead of four columns */
 @media screen and (max-width: 800px) {
-  .column {
-    -ms-flex: 50%;
-    flex: 50%;
-    max-width: 50%;
+  .step-column {
+    -ms-flex: 60%;
+    flex: 60%;
+    max-width: 60%;
+  }
+
+  .step-caption spam.border {
+    font-size: 20px;
   }
 }
 
 /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
-  .column {
+  .step-column {
     -ms-flex: 100%;
     flex: 100%;
     max-width: 100%;
   }
+
+  .step-caption spam.border {
+    font-size: 14px;
+  }
 }
 
-.label {
-    background-color: #FF9900;
-    color:#cccccc;
-    font-size: 16px;
-}

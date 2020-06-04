@@ -28,8 +28,3 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 } 
 
- function getCommentUsingArrowFunctions() {
-  fetch('/data').then(response => response.text()).then((comment) => {
-    document.getElementById('comment-container').innerText = comment;
-  });
-}
