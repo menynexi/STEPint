@@ -34,10 +34,18 @@ public class CommentServlet extends HttpServlet {
     names.add("leah");
 
     response.setContentType("text/html;");
-
-    for(int i = 0; i < names.size(); i++){
-        response.getWriter().println(names.get(i));
+    for(int i = 0; i < names.size(); i ++){
+        String json = convertToJson(names.get(i));
+        response.getWriter().println(json);
     }
   }
-  
+
+  private String convertToJson(String name) {
+      String json = "";
+      json += "hey I'm ";
+      json += name;
+      json += "\nI'm an intern at google";
+      return json;
+  }
+
 }
