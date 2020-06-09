@@ -7,17 +7,17 @@
     <link rel="stylesheet" href="style.css">
     <script src="commentScript.js"></script>
   </head>
-  <body>
+  <body onload = "getComments()">
     <h1><u>This is the comments page</u></h1>
     <div style="text-align:center;">
-      <!--<form style="" action="" method="post">
+      <form style="" action="/commentServlet" method="post">
         <label class="label" for="name">Name:</label><br>
-        <input type="text" placeholder="Name" required><br>
-        <label class="label" for="comment">Comment:</label><br>
-        <input type="text"  placeholder="Comment" required><br>
-        <input type="submit" ><br>
-      </form>-->
-      <button onclick="getComment()">Fetch a comment</button>
+        <input type="text" name="name" placeholder="name" required><br>
+        <!--<label class="label" for="message">Message:</label><br>
+        <input type="text"  name="comment" placeholder="message" required><br>-->
+        <input type="submit"><br>
+      </form>
+
       <div id="comment-container"></div>
     </div>
   </body>

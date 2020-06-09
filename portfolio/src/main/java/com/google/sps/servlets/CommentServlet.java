@@ -24,28 +24,34 @@ import java.util.ArrayList;
  
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/commentServlet")
-public class CommentServlet extends HttpServlet {
- 
+class CommentServlet extends HttpServlet {
+  public ArrayList<String> comments = new ArrayList<>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> names = new ArrayList<>();
-    names.add("many");
-    names.add("zoe");
-    names.add("leah");
-
-    response.setContentType("text/html;");
-    for(int i = 0; i < names.size(); i ++){
-        String json = convertToJson(names.get(i));
-        response.getWriter().println(json);
-    }
+      response.setContentType("application/json");
+      response.getWriter().println(convertToJsonWithGSon(comments));
   }
 
-  private String convertToJson(String name) {
-      String json = "";
-      json += "hey I'm ";
-      json += name;
-      json += "\nI'm an intern at google";
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+      String name = getName(request);
+      comments.add(name);
+      comments.add("meny");
+      response.sendRedirect("/comments.html");
+  }
+
+  public String convertToJsonWithGSon(ArrayList displayMessage) {
+      Gson gson = new Gson();
+      String json = gson.toJson(displayMessage);
       return json;
   }
+
+  public String getName(HttpServletRequest request){ 
+      String name = request.getParameter("name");
+      return name;
+  }
+
+
 
 }

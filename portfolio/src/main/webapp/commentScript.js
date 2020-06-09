@@ -15,7 +15,7 @@
 /**
  * Adds a random suggestion by many to the page.
  */
-function getComment() {
+/*function getComment() {
   console.log('Fetching a comment.');
 
   // The fetch() function returns a Promise because the request is asynchronous.
@@ -29,7 +29,7 @@ function getComment() {
  * Handles response by converting it to text and passing the result to
  * addQuoteToDom().
  */
-function handleResponse(response) {
+/*function handleResponse(response) {
   console.log('Handling the response.');
 
   // response.text() returns a Promise, because the response is a stream of
@@ -42,9 +42,27 @@ function handleResponse(response) {
 }
 
 /** Adds a random quote to the DOM. */
-function addCommentToDom(comment) {
+/*function addCommentToDom(comment) {
   console.log('Adding quote to dom: ' + comment);
 
   const quoteContainer = document.getElementById('comment-container');
   quoteContainer.innerText = comment;
+}*/
+
+function getComments() {
+    fetch('/commentServlet').then(response => response.json()).then((comments) => {
+        const commentsElement = document.getElementById('comment-container');
+        commentsElement.innerHTML = " ";
+        commentsElement.appendChild(createList(comments[0]));
+        /*for (var i = 0; i < comments.length; i++) {
+          commentsElement.appendChild(createList(comments[i]));
+        }*/
+    });
+}
+
+// Makes each comment a list item
+function createList(text) {
+    const liElement = document.createElement('li');
+    liElement.innerText = text;
+    return liElement;
 }
