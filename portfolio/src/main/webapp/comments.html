@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <meta name = "viewpoint" content="width=device-width, initial-scale=1">
-    <title>Comments-page</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="commentScript.js"></script>
+      <title>Comments</title>
+      <script src = "commentScript.js" type="text/javascript"> </script>
+      <link rel="stylesheet" href="style.css">
   </head>
-  <body onload = "getComments()">
-    <h1><u>This is the comments page</u></h1>
-    <div style="text-align:center;">
-      <form style="" action="/commentServlet" method="post">
-        <label class="label" for="name">Name:</label><br>
-        <input type="text" name="name" placeholder="name" required><br>
-        <!--<label class="label" for="message">Message:</label><br>
-        <input type="text"  name="comment" placeholder="message" required><br>-->
-        <input type="submit"><br>
+  <body onload="getComment()">
+      <h2><u>Comments Page</u></h2>
+      <form action="/commentServlet" method="post">
+          <label for="user">Name:</label><br>
+          <input type="text" name="user" required><br>
+          <label for="reflection">Comment:</label><br>
+          <input type="text" name="reflection" required><br>
+          <input type="submit">
       </form>
-
-      <div id="comment-container"></div>
-    </div>
-  </body>
-  </html>
-  
+      <div id = "comments-container"></div>
+  </body> 
