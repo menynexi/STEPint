@@ -29,10 +29,9 @@ public class CommentServlet extends HttpServlet {
 
   public ArrayList<Comment> comments = new ArrayList<Comment>();
 
-  /* responds with a json string*/
+  /** responds with a json string **/
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Convert the ArrayLists to JSON
 
     Gson gson = new Gson();
     String json = gson.toJson(comments);
@@ -42,14 +41,17 @@ public class CommentServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  /* when the submit button on the values page is hit, doPost requests the text in the author and commment field and stores them*/ 
+  /* 
+  * when the submit button on the values page is hit, 
+  * doPost requests the text in the author and commment field and stores them
+  */ 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      
+
     // Get the input from the comments form
-    String nameStr = request.getParameter("user");
-    String reflectionStr = request.getParameter("reflection");
-    comments.add(new Comment(nameStr, reflectionStr));
+    String name = request.getParameter("user");
+    String reflection = request.getParameter("reflection");
+    comments.add(new Comment(name, reflection));
 
     // redirect back to comments page
     response.sendRedirect("/comments.html");
