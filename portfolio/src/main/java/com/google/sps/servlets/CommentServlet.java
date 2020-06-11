@@ -11,33 +11,49 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
- 
+
 package com.google.sps.servlets;
- 
+import com.google.sps.data.Comment;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.Gson;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
- 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
+
+/** This servet is responsible for the comment data **/
 @WebServlet("/commentServlet")
 public class CommentServlet extends HttpServlet {
- 
+
+  public ArrayList<Comment> comments = new ArrayList<Comment>();
+
+  /** responds with a json string **/
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    ArrayList<String> names = new ArrayList<>();
-    names.add("many");
-    names.add("zoe");
-    names.add("leah");
 
-    response.setContentType("text/html;");
+    Gson gson = new Gson();
+    String json = gson.toJson(comments);
 
-    for(int i = 0; i < names.size(); i++){
-        response.getWriter().println(names.get(i));
-    }
+    // Send the JSON as the response
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
-  
+
+  /* 
+  * when the submit button on the values page is hit, 
+  * doPost requests the text in the author and commment field and stores them
+  */ 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    // Get the input from the comments form
+    String name = request.getParameter("user");
+    String reflection = request.getParameter("reflection");
+    comments.add(new Comment(name, reflection));
+
+    // redirect back to comments page
+    response.sendRedirect("/comments.html");
+  }
 }

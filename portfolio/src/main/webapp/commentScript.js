@@ -12,39 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random suggestion by many to the page.
- */
-function getComment() {
-  console.log('Fetching a comment.');
+/*
+* Purpose: recieves HTTP promise response from CommentsServlet.java, 
+* places authors and comments into appropriate html container 
+*/
 
-  // The fetch() function returns a Promise because the request is asynchronous.
-  const responsePromise = fetch('/commentServlet');
-
-  // When the request is complete, pass the response into handleResponse().
-  responsePromise.then(handleResponse);
+function getComment(){
+    const responsePromise = fetch('/commentServlet');
+    responsePromise.then(handleResponse);
 }
 
-/**
- * Handles response by converting it to text and passing the result to
- * addQuoteToDom().
- */
-function handleResponse(response) {
-  console.log('Handling the response.');
-
-  // response.text() returns a Promise, because the response is a stream of
-  // content and not a simple variable.
-  const textPromise = response.text();
-
-  // When the response is converted to text, pass the result into the
-  // addQuoteToDom() function.
-  textPromise.then(addCommentToDom);
+function handleResponse(response){
+    const commentListPromise = response.json();
+    commentListPromise.then(addCommentsToDom);
 }
 
-/** Adds a random quote to the DOM. */
-function addCommentToDom(comment) {
-  console.log('Adding quote to dom: ' + comment);
-
-  const quoteContainer = document.getElementById('comment-container');
-  quoteContainer.innerText = comment;
+/** Adds user and reflection to html page **/
+function addCommentsToDom(commentList){
+    const commentContainer = document.getElementById('comments-container');
+    commentContainer.innerHTML = '';
+    for (let i = 0; i < commentList.length; i++){
+        commentContainer.appendChild(
+            createComment(commentList[i].user, commentList[i].reflection));
+    }
 }
+
+/** Creates an <li> element containing author: comment. */
+function createComment(user, reflection) {
+  const liElement = document.createElement('li');
+  liElement.innerText = user + "--> " + reflection + "\n\n\n";
+  return liElement;
+} 
