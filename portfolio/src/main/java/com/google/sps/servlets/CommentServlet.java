@@ -37,29 +37,33 @@ public class CommentServlet extends HttpServlet {
   private static final String REFLECTION_PARAMETER = "reflection";
   private static final String COMMENT_PARAMETER = "Comment";
   private static final String TIMESTAMP_PARAMETER = "timestamp";
-  
-  private String USERNAME_INPUT;
-  private String REFLECTION_INPUT;
-  private long ID;
-  private long TIMESTAMP_OF_COMMENT;  
+
+  private String userNameInput;
+  private String reflectionInput;
+  private long idGiven;
+  private long timestampOfComment;  
 
   public ArrayList<Comment> comments = new ArrayList<Comment>();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    this.USERNAME_INPUT = request.getParameter(this.USERNAME_PARAMETER);
-    this.REFLECTION_INPUT = request.getParameter(this.REFLECTION_PARAMETER);
-    this.TIMESTAMP_OF_COMMENT = System.currentTimeMillis();
+    this.userNameInput = request.getParameter(this.USERNAME_PARAMETER);
+    this.reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
+    this.timestampOfComment = System.currentTimeMillis();
 
-    Entity taskEntity = new Entity(this.COMMENT_PARAMETER);
-    taskEntity.setProperty(this.USERNAME_PARAMETER, this.USERNAME_INPUT);
-    taskEntity.setProperty(this.REFLECTION_PARAMETER, this.REFLECTION_INPUT);
-    taskEntity.setProperty(this.TIMESTAMP_PARAMETER, this.TIMESTAMP_OF_COMMENT);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(taskEntity);
+    createEntitys();
 
     response.sendRedirect("/comments.html");
+  }
+
+  public void createEntitys(){
+    Entity commentEntity = new Entity(this.COMMENT_PARAMETER);
+    commentEntity.setProperty(this.USERNAME_PARAMETER, this.userNameInput);
+    commentEntity.setProperty(this.REFLECTION_PARAMETER, this.reflectionInput);
+    commentEntity.setProperty(this.TIMESTAMP_PARAMETER, this.timestampOfComment);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
   }
 
 }
