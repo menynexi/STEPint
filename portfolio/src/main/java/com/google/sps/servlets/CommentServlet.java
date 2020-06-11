@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+
 import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,10 +23,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 
 /** This servet is responsible for the comment data **/
 @WebServlet("/commentServlet")
 public class CommentServlet extends HttpServlet {
+  private String username = "user";
+  private String reflection = "reflection";
 
   public ArrayList<Comment> comments = new ArrayList<Comment>();
 
@@ -41,19 +47,19 @@ public class CommentServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
-  /* 
-  * when the submit button on the values page is hit, 
-  * doPost requests the text in the author and commment field and stores them
-  */ 
-  @Override
+    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    this.username = request.getParameter("username");
+    this.reflection = request.getParameter("reflection");
 
-    // Get the input from the comments form
-    String name = request.getParameter("user");
-    String reflection = request.getParameter("reflection");
-    comments.add(new Comment(name, reflection));
+    Entity taskEntity = new Entity("comment");
+    taskEntity.setProperty("username", username);
+    taskEntity.setProperty("reflection", reflection);
 
-    // redirect back to comments page
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
+
     response.sendRedirect("/comments.html");
   }
+
 }

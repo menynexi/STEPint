@@ -33,7 +33,7 @@ function addCommentsToDom(commentList){
     commentContainer.innerHTML = '';
     for (let i = 0; i < commentList.length; i++){
         commentContainer.appendChild(
-            createComment(commentList[i].user, commentList[i].reflection));
+            createComment(commentList[i].username, commentList[i].reflection));
     }
 }
 

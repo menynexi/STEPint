@@ -2,19 +2,19 @@ package com.google.sps.data;
 
 /** an Instance of a comment **/
 public final class Comment {
-  final private String user;
+  final private String username;
   final private String reflection;
 
-  public Comment(String user, String reflection) {
-    this.user = user;
+  public Comment(String username, String reflection) {
+    this.username = username;
     this.reflection = reflection;
   }
   
-  public getUser(){
-    return user;
+  public String getUsername(){
+    return username;
   }
 
-  public getRelfecltion(){
+  public String getReflection(){
       return reflection;
   }
 

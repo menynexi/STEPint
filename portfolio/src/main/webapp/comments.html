@@ -7,13 +7,15 @@
   </head>
   <body onload="getComment()">
       <h2><u>Comments Page</u></h2>
-      <form action="/commentServlet" method="post">
-          <label for="user">Name:</label><br>
-          <input type="text" name="user" required><br>
-          <label for="reflection">Comment:</label><br>
-          <input type="text" name="reflection" required><br>
-          <input type="submit">
-      </form>
+      <div class="form">
+        <form action="/commentServlet" method="post">
+            <label for="user">Name:</label><br>
+            <input type="text" name="username" required><br>
+            <label for="reflection">Comment:</label><br>
+            <input type="text" name="reflection" required><br>
+            <input type="submit">
+        </form>
+      </div>  
       <div id = "comments-container"></div>
   </body> 
 </html>
