@@ -26,35 +26,35 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** This servet is responsible for the comment data **/
 @WebServlet("/commentServlet")
 public class CommentServlet extends HttpServlet {
-  private String username = "user";
-  private String reflection = "reflection";
+  private static final String USERNAME_PARAMETER = "username";
+  private static final String REFLECTION_PARAMETER = "reflection";
+  private static final String COMMENT_PARAMETER = "Comment";
+  private static final String TIMESTAMP_PARAMETER = "timestamp";
+  
+  private String USERNAME_INPUT;
+  private String REFLECTION_INPUT;
+  private long ID;
+  private long TIMESTAMP_OF_COMMENT;  
 
   public ArrayList<Comment> comments = new ArrayList<Comment>();
 
-  /** responds with a json string **/
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
-
-    // Send the JSON as the response
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
-
-    @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    this.username = request.getParameter("username");
-    this.reflection = request.getParameter("reflection");
+    this.USERNAME_INPUT = request.getParameter(this.USERNAME_PARAMETER);
+    this.REFLECTION_INPUT = request.getParameter(this.REFLECTION_PARAMETER);
+    this.TIMESTAMP_OF_COMMENT = System.currentTimeMillis();
 
-    Entity taskEntity = new Entity("comment");
-    taskEntity.setProperty("username", username);
-    taskEntity.setProperty("reflection", reflection);
+    Entity taskEntity = new Entity(this.COMMENT_PARAMETER);
+    taskEntity.setProperty(this.USERNAME_PARAMETER, this.USERNAME_INPUT);
+    taskEntity.setProperty(this.REFLECTION_PARAMETER, this.REFLECTION_INPUT);
+    taskEntity.setProperty(this.TIMESTAMP_PARAMETER, this.TIMESTAMP_OF_COMMENT);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(taskEntity);

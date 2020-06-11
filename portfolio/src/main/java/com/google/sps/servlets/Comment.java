@@ -2,20 +2,32 @@ package com.google.sps.data;
 
 /** an Instance of a comment **/
 public final class Comment {
-  final private String username;
-  final private String reflection;
+  private final String username;
+  private final String reflection;
+  private final long timeStamp;
+  private final long id;
 
-  public Comment(String username, String reflection) {
+  public Comment(long id, String username, String reflection, long timeStamp) {
+    this.id = id;
     this.username = username;
     this.reflection = reflection;
+    this.timeStamp = timeStamp;
   }
   
-  public String getUsername(){
-    return username;
+  public String getUsername() {
+    return this.username;
   }
 
-  public String getReflection(){
-      return reflection;
+  public String getReflection() {
+    return this.reflection;
+  }
+
+  public long getId() {
+    return this.id;
+  }
+
+  public long getTimeStamp() {
+    return this.timeStamp;
   }
 
 } 
