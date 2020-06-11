@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+
 import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,38 +23,47 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** This servet is responsible for the comment data **/
 @WebServlet("/commentServlet")
 public class CommentServlet extends HttpServlet {
+  private static final String USERNAME_PARAMETER = "username";
+  private static final String REFLECTION_PARAMETER = "reflection";
+  private static final String COMMENT_PARAMETER = "Comment";
+  private static final String TIMESTAMP_PARAMETER = "timestamp";
+
+  private String userNameInput;
+  private String reflectionInput;
+  private long idGiven;
+  private long timestampOfComment;  
 
   public ArrayList<Comment> comments = new ArrayList<Comment>();
 
-  /** responds with a json string **/
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-    Gson gson = new Gson();
-    String json = gson.toJson(comments);
-
-    // Send the JSON as the response
-    response.setContentType("application/json;");
-    response.getWriter().println(json);
-  }
-
-  /* 
-  * when the submit button on the values page is hit, 
-  * doPost requests the text in the author and commment field and stores them
-  */ 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    this.userNameInput = request.getParameter(this.USERNAME_PARAMETER);
+    this.reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
+    this.timestampOfComment = System.currentTimeMillis();
 
-    // Get the input from the comments form
-    String name = request.getParameter("user");
-    String reflection = request.getParameter("reflection");
-    comments.add(new Comment(name, reflection));
+    createEntitys();
 
-    // redirect back to comments page
     response.sendRedirect("/comments.html");
   }
+
+  public void createEntitys(){
+    Entity commentEntity = new Entity(this.COMMENT_PARAMETER);
+    commentEntity.setProperty(this.USERNAME_PARAMETER, this.userNameInput);
+    commentEntity.setProperty(this.REFLECTION_PARAMETER, this.reflectionInput);
+    commentEntity.setProperty(this.TIMESTAMP_PARAMETER, this.timestampOfComment);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+  }
+
 }

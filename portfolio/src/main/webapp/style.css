@@ -10,16 +10,19 @@
 body, html {
   height:100%;
   background-color: #771100;
+  text-align: center;
 }
 
-h1, h2, h3 {
+h1, h2, h3 { 
   color:#ff9900;
   text-align: center;
+  font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 p {
   color: #cccccc;
   text-align: center;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
 
 table, tr, td {
@@ -51,10 +54,10 @@ table, tr, td {
 }
 
 .step-caption {
-  position:absolute;
+  position: absolute;
   left: 0;
   top: 20%;
-  width:100%;
+  width: 100%;
   text-align: center;
 }
 
@@ -82,10 +85,10 @@ table, tr, td {
   flex-wrap: wrap;
   padding: 0 4px;
   margin-left: auto;
-  margin-right:auto;
+  margin-right: auto;
 }
 
-.step-column {
+.step-column { 
   -ms-flex: 32%;
   flex: 32%;
   max-width: 32%;
@@ -105,9 +108,9 @@ table, tr, td {
 }
 
 .step-table-align {
-    margin-top:10px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .step-table-align img {
@@ -115,13 +118,13 @@ table, tr, td {
     width: 100px;
 }
 
-#comment-container{
+#comment-container {
     color:white;
     font-size: 16px;
 }
 
 /*you can place size restrictions so that your website can adapt to phones and tablets*/
-@media only screen and (max-device-width: 1366px)  {
+@media only screen and (max-device-width: 1366px) {
   .img-1, .img-2 { 
     background-attachment: scroll;
   }
@@ -146,7 +149,7 @@ table, tr, td {
 
 /* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {
-  .step-column {
+  .step-column  {
     -ms-flex: 100%;
     flex: 100%;
     max-width: 100%;
@@ -155,4 +158,23 @@ table, tr, td {
   .step-caption spam.border {
     font-size: 14px;
   }
+}
+
+li {
+    list-style-type: "\1F44D"; 
+    background-color: #cccccc;
+    border: 1px solid #ff9900;
+}
+
+div.form {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
+form {
+    display: inline-block;
+    margin-left: 45%;
+    margin-right: 50%;
+    text-align: left;
 }
