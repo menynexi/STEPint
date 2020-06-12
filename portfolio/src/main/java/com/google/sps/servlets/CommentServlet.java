@@ -43,7 +43,7 @@ public class CommentServlet extends HttpServlet {
   private long idGiven;
   private long timestampOfComment;  
 
-  public ArrayList<Comment> comments = new ArrayList<Comment>();
+  public List<Comment> comments;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -52,8 +52,30 @@ public class CommentServlet extends HttpServlet {
     this.timestampOfComment = System.currentTimeMillis();
 
     createEntitys();
-
     response.sendRedirect("/comments.html");
+  }
+
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    Query query = new Query(COMMENT_PARAMETER).addSort(TIMESTAMP_PARAMETER, SortDirection.DESCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    populateList(results);
+    /*this.comments = new ArrayList<>();
+    for (Entity commentEntity : results.asIterable()) {
+      this.idGiven = commentEntity.getKey().getId();
+      this.userNameInput = (String) commentEntity.getProperty(USERNAME_PARAMETER);
+      this.reflectionInput = (String) commentEntity.getProperty(REFLECTION_PARAMETER);
+      this.timestampOfComment = (long) commentEntity.getProperty(TIMESTAMP_PARAMETER);
+
+      Comment comment = new Comment(idGiven, userNameInput, reflectionInput,timestampOfComment);
+      comments.add(comment);
+    }*/
+
+    Gson gson = new Gson();
+    response.setContentType("application/json;");
+    response.getWriter().println(gson.toJson(this.comments));
   }
 
   public void createEntitys(){
@@ -64,6 +86,19 @@ public class CommentServlet extends HttpServlet {
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
+  }
+
+  public void populateList(PreparedQuery results){
+    this.comments = new ArrayList<>();
+    for (Entity commentEntity : results.asIterable()) {
+      this.idGiven = commentEntity.getKey().getId();
+      this.userNameInput = (String) commentEntity.getProperty(USERNAME_PARAMETER);
+      this.reflectionInput = (String) commentEntity.getProperty(REFLECTION_PARAMETER);
+      this.timestampOfComment = (long) commentEntity.getProperty(TIMESTAMP_PARAMETER);
+
+      Comment comment = new Comment(idGiven, userNameInput, reflectionInput,timestampOfComment);
+      comments.add(comment);
+    }
   }
 
 }
