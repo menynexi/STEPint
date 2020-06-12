@@ -36,7 +36,7 @@ public class CommentServlet extends HttpServlet {
   private static final String USERNAME_PARAMETER = "username";
   private static final String REFLECTION_PARAMETER = "reflection";
   private static final String COMMENT_PARAMETER = "Comment";
-    private static final String TIMESTAMP_PARAMETER = "timestamp";
+  private static final String TIMESTAMP_PARAMETER = "timestamp";
   private static final String APPLICATION_JSON_PARAMETER = "application/json;";
   private static final String COMMENT_HTML_PARAMETER = "/comments.html";
 
@@ -83,7 +83,12 @@ public class CommentServlet extends HttpServlet {
   public void populateList(PreparedQuery results){
     this.comments = new ArrayList<>();
     for (Entity commentEntity : results.asIterable()) {
-      Comment comment = new Comment(commentEntity.getKey().getId(), (String) commentEntity.getProperty(USERNAME_PARAMETER), (String) commentEntity.getProperty(REFLECTION_PARAMETER),(long) commentEntity.getProperty(TIMESTAMP_PARAMETER));
+      Comment comment = new Comment(
+        commentEntity.getKey().getId(), 
+        (String) commentEntity.getProperty(USERNAME_PARAMETER), 
+        (String) commentEntity.getProperty(REFLECTION_PARAMETER),
+        (long) commentEntity.getProperty(TIMESTAMP_PARAMETER)
+        );
       comments.add(comment);
     }
   }
