@@ -62,16 +62,6 @@ public class CommentServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     populateList(results);
-    /*this.comments = new ArrayList<>();
-    for (Entity commentEntity : results.asIterable()) {
-      this.idGiven = commentEntity.getKey().getId();
-      this.userNameInput = (String) commentEntity.getProperty(USERNAME_PARAMETER);
-      this.reflectionInput = (String) commentEntity.getProperty(REFLECTION_PARAMETER);
-      this.timestampOfComment = (long) commentEntity.getProperty(TIMESTAMP_PARAMETER);
-
-      Comment comment = new Comment(idGiven, userNameInput, reflectionInput,timestampOfComment);
-      comments.add(comment);
-    }*/
 
     Gson gson = new Gson();
     response.setContentType("application/json;");
