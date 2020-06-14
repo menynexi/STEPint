@@ -37,15 +37,17 @@ public class CommentServlet extends HttpServlet {
   private static final String REFLECTION_PARAMETER = "reflection";
   private static final String COMMENT_PARAMETER = "Comment";
   private static final String TIMESTAMP_PARAMETER = "timestamp";
+  private static final String MAXCOMMENT_PARAMETER = "maxComment";
   private static final String APPLICATION_JSON_PARAMETER = "application/json;";
   private static final String COMMENT_HTML_PARAMETER = "/comments.html";
 
+  private static final int MAXCOMMENT = 5;//hardcoded soon to be taken in by user input
 
   private String userNameInput;
   private String reflectionInput;
   private long idGiven;
   private long timestampOfComment;  
-  private int maxComment;
+  
 
   public List<Comment> comments;
 
@@ -54,6 +56,7 @@ public class CommentServlet extends HttpServlet {
     this.userNameInput = request.getParameter(this.USERNAME_PARAMETER);
     this.reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
     this.timestampOfComment = System.currentTimeMillis();
+    //this.maxComment = request.getParameter(this.MAXCOMMENT_PARAMETER);
 
 
     createEntitys();
@@ -66,7 +69,7 @@ public class CommentServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    populateList(results);
+    displayMaxComments(results,this.MAXCOMMENT);
 
     String json = new Gson().toJson(this.comments);
     response.setContentType(APPLICATION_JSON_PARAMETER);
@@ -82,9 +85,12 @@ public class CommentServlet extends HttpServlet {
     datastore.put(commentEntity);
   }
 
-  public void populateList(PreparedQuery results){
+  public void displayMaxComments(PreparedQuery results, int maxComment){
     this.comments = new ArrayList<>();
-    for (Entity commentEntity : results.asIterable()) {
+    for (Entity commentEntity : results.asIterable()){
+      if(maxComment == 0){
+          break;
+      }
       Comment comment = new Comment(
         commentEntity.getKey().getId(), 
         (String) commentEntity.getProperty(USERNAME_PARAMETER), 
@@ -92,6 +98,7 @@ public class CommentServlet extends HttpServlet {
         (long) commentEntity.getProperty(TIMESTAMP_PARAMETER)
         );
       comments.add(comment);
+      maxComment--;
     }
   }
 
