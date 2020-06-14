@@ -13,7 +13,7 @@ public final class Comment {
     this.reflection = reflection;
     this.timeStamp = timeStamp;
   }
-  
+
   public String getUsername() {
     return this.username;
   }
@@ -29,5 +29,4 @@ public final class Comment {
   public long getTimeStamp() {
     return this.timeStamp;
   }
-
 } 
