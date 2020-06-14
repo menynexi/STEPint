@@ -45,6 +45,7 @@ public class CommentServlet extends HttpServlet {
   private String reflectionInput;
   private long idGiven;
   private long timestampOfComment;  
+  private int maxComment;
 
   public List<Comment> comments;
 
@@ -53,6 +54,7 @@ public class CommentServlet extends HttpServlet {
     this.userNameInput = request.getParameter(this.USERNAME_PARAMETER);
     this.reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
     this.timestampOfComment = System.currentTimeMillis();
+
 
     createEntitys();
     response.sendRedirect(COMMENT_HTML_PARAMETER);
@@ -66,9 +68,9 @@ public class CommentServlet extends HttpServlet {
 
     populateList(results);
 
-    Gson gson = new Gson();
+    String json = new Gson().toJson(this.comments);
     response.setContentType(APPLICATION_JSON_PARAMETER);
-    response.getWriter().println(gson.toJson(this.comments));
+    response.getWriter().println(json);
   }
 
   public void createEntitys(){
