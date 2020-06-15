@@ -37,7 +37,7 @@ public class CommentServlet extends HttpServlet {
   private static final String REFLECTION_PARAMETER = "reflection";
   private static final String COMMENT_PARAMETER = "Comment";
   private static final String TIMESTAMP_PARAMETER = "timestamp";
-  private static final String MAXCOMMENT_PARAMETER = "maxComment";
+  private static final String MAXCOMMENT_PARAMETER = "max-comment";
   private static final String APPLICATION_JSON_PARAMETER = "application/json;";
   private static final String COMMENT_HTML_PARAMETER = "/comments.html";
 
@@ -46,7 +46,8 @@ public class CommentServlet extends HttpServlet {
   private String userNameInput;
   private String reflectionInput;
   private long idGiven;
-  private long timestampOfComment;  
+  private long timestampOfComment; 
+  private int maxComment; 
   
 
   public List<Comment> comments;
@@ -56,9 +57,8 @@ public class CommentServlet extends HttpServlet {
     this.userNameInput = request.getParameter(this.USERNAME_PARAMETER);
     this.reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
     this.timestampOfComment = System.currentTimeMillis();
-    //this.maxComment = request.getParameter(this.MAXCOMMENT_PARAMETER);
 
-
+    setMaxComment(request);
     createEntitys();
     response.sendRedirect(COMMENT_HTML_PARAMETER);
   }
@@ -69,12 +69,17 @@ public class CommentServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    displayMaxComments(results,this.MAXCOMMENT);
-
+    displayMaxComments(results, this.maxComment);
     String json = new Gson().toJson(this.comments);
     response.setContentType(APPLICATION_JSON_PARAMETER);
     response.getWriter().println(json);
   }
+
+  public void setMaxComment(HttpServletRequest request){
+    String maxComment = request.getParameter(MAXCOMMENT_PARAMETER);
+    this.maxComment = Integer.parseInt(maxComment);
+  }
+
 
   public void createEntitys(){
     Entity commentEntity = new Entity(this.COMMENT_PARAMETER);
