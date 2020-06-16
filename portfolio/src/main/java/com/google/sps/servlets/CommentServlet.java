@@ -38,7 +38,7 @@ public class CommentServlet extends HttpServlet {
   private static final String USERNAME_PARAMETER = "username";
   private static final String REFLECTION_PARAMETER = "reflection";
   private static final String COMMENT_PARAMETER = "Comment";
-  private static final String DATETIME_PARAMETER = "timestamp";
+  private static final String DATE_TIME_PARAMETER = "timestamp";
   private static final String MAXCOMMENT_PARAMETER = "max-comment";
   private static final String APPLICATION_JSON_PARAMETER = "application/json;";
   private static final String COMMENT_HTML_PARAMETER = "/comments.html";
@@ -73,7 +73,7 @@ public class CommentServlet extends HttpServlet {
     Entity commentEntity = new Entity(COMMENT_PARAMETER);
     commentEntity.setProperty(USERNAME_PARAMETER, userNameInput);
     commentEntity.setProperty(REFLECTION_PARAMETER, reflectionInput);
-    commentEntity.setProperty(DATETIME_PARAMETER, dateTime);
+    commentEntity.setProperty(DATE_TIME_PARAMETER, dateTime);
     return commentEntity;
   }
 
@@ -96,7 +96,7 @@ public class CommentServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query(COMMENT_PARAMETER).addSort(DATETIME_PARAMETER, SortDirection.DESCENDING);
+    Query query = new Query(COMMENT_PARAMETER).addSort(DATE_TIME_PARAMETER, SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -108,13 +108,14 @@ public class CommentServlet extends HttpServlet {
   }
   
   public void displayMaxComments(PreparedQuery results, int maxComment) {
+    int commentEntityIndex = 0;  
     comments = new ArrayList<>(); 
     for(Entity commentEntity : results.asIterable()){
-      if(maxComment == 0){ 
+      if(commentEntityIndex == maxComment){ 
           break;
         }
       comments.add(createCommentFromEntity(commentEntity));
-      maxComment--;
+      commentEntityIndex++;
     }
   }
 
@@ -129,7 +130,7 @@ public class CommentServlet extends HttpServlet {
         commentEntity.getKey().getId(), 
         commentEntity.getProperty(USERNAME_PARAMETER).toString(), 
         commentEntity.getProperty(REFLECTION_PARAMETER).toString(),
-        commentEntity.getProperty(DATETIME_PARAMETER).toString()
+        commentEntity.getProperty(DATE_TIME_PARAMETER).toString()
       );
   }
 }
