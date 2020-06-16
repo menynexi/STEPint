@@ -40,6 +40,6 @@ function addCommentsToDom(commentList){
 /** Creates an <li> element containing author: comment. */
 function createComment(user, reflection, timeStamp) {
   const liElement = document.createElement('li');
-  liElement.innerText = user + "--> " + reflection + "\t" + timeStamp + "\n\n\n";
+  liElement.innerText = user + "--> " + reflection + "\n" + timeStamp + "\n\n\n";
   return liElement;
 } 

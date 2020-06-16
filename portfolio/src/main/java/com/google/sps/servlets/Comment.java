@@ -29,6 +29,4 @@ public final class Comment {
   public String getTimeStamp() {
     return this.timeStamp;
   }
-
-
 } 
