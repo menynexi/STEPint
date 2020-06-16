@@ -25,7 +25,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String name = request.getParameter("name-input");
+    String name = request.getParameter("name");
     String color = request.getParameter("color-input");
     String description = request.getParameter("description-input");
 

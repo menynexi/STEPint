@@ -27,18 +27,43 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/new-task")
 public class NewTaskServlet extends HttpServlet {
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String title = request.getParameter("title");
-    long timestamp = System.currentTimeMillis();
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Query query = new Query("Task").addSort("timestamp", SortDirection.DESCENDING);
 
-    Entity taskEntity = new Entity("Task");
-    taskEntity.setProperty("title", title);
-    taskEntity.setProperty("timestamp", timestamp);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        PreparedQuery results = datastore.prepare(query);
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(taskEntity);
+        List<Task> tasks = new ArrayList<>();
+        for (Entity entity : results.asIterable()) {
+        long id = entity.getKey().getId();
+        String title = (String) entity.getProperty("title");
+        long timestamp = (long) entity.getProperty("timestamp");
 
-    response.sendRedirect("/index.html");
-  }
+        Task task = new Task(id, title, timestamp);
+        tasks.add(task);
+        }
+
+        Gson gson = new Gson();
+
+        response.setContentType("application/json;");
+        response.getWriter().println(gson.toJson(tasks));
+    }
+
+
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String title = request.getParameter("title");
+        long timestamp = System.currentTimeMillis();
+
+        Entity taskEntity = new Entity("Task");
+        taskEntity.setProperty("title", title);
+        taskEntity.setProperty("timestamp", timestamp);
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(taskEntity);
+
+        response.sendRedirect("/index.html");
+    }
 }
