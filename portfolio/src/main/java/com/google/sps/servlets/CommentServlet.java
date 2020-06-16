@@ -29,6 +29,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;  
 
 /** This servet is responsible for the comment data **/
 @WebServlet("/commentServlet")
@@ -45,17 +47,17 @@ public class CommentServlet extends HttpServlet {
 
   private String userNameInput;
   private String reflectionInput;
-  private long idGiven;
-  private long timestampOfComment; 
+  private String timestampOfComment;
+  private long idGiven; 
   private int maxComment = 5; 
 
   public List<Comment> comments;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    this.userNameInput = request.getParameter(this.USERNAME_PARAMETER);
-    this.reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
-    this.timestampOfComment = System.currentTimeMillis();
+    userNameInput = request.getParameter(this.USERNAME_PARAMETER);
+    reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
+    timestampOfComment = getCurrentTime();
 
     if(request.getParameter(COMMENT_FORM) != null && !request.getParameter(COMMENT_FORM).isEmpty()){
         createEntitys();
@@ -72,6 +74,7 @@ public class CommentServlet extends HttpServlet {
     commentEntity.setProperty(USERNAME_PARAMETER, userNameInput);
     commentEntity.setProperty(REFLECTION_PARAMETER, reflectionInput);
     commentEntity.setProperty(TIMESTAMP_PARAMETER, timestampOfComment);
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(commentEntity);
   }
@@ -110,13 +113,18 @@ public class CommentServlet extends HttpServlet {
     }
   }
 
+  public String getCurrentTime(){  
+   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+   LocalDateTime now = LocalDateTime.now();
+   return(dtf.format(now).toString());
+  }  
+
   public Comment createCommentFromEntity(Entity commentEntity){
-      Comment comment = new Comment(
+      return new Comment(
         commentEntity.getKey().getId(), 
-        (String) commentEntity.getProperty(USERNAME_PARAMETER), 
-        (String) commentEntity.getProperty(REFLECTION_PARAMETER),
-        (long) commentEntity.getProperty(TIMESTAMP_PARAMETER)
+        commentEntity.getProperty(USERNAME_PARAMETER).toString(), 
+        commentEntity.getProperty(REFLECTION_PARAMETER).toString(),
+        commentEntity.getProperty(TIMESTAMP_PARAMETER).toString()
       );
-    return comment;
   }
 }

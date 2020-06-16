@@ -33,13 +33,13 @@ function addCommentsToDom(commentList){
     commentContainer.innerHTML = '';
     for (let i = 0; i < commentList.length; i++){
         commentContainer.appendChild(
-            createComment(commentList[i].username, commentList[i].reflection));
+            createComment(commentList[i].username, commentList[i].reflection, commentList[i].timeStamp));
     }
 }
 
 /** Creates an <li> element containing author: comment. */
-function createComment(user, reflection) {
+function createComment(user, reflection, timeStamp) {
   const liElement = document.createElement('li');
-  liElement.innerText = user + "--> " + reflection + "\n\n\n";
+  liElement.innerText = user + "--> " + reflection + "\t" + timeStamp + "\n\n\n";
   return liElement;
 } 

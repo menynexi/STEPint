@@ -4,10 +4,10 @@ package com.google.sps.data;
 public final class Comment {
   private final String username;
   private final String reflection;
-  private final long timeStamp;
+  private final String timeStamp;
   private final long id;
 
-  public Comment(long id, String username, String reflection, long timeStamp) {
+  public Comment(long id, String username, String reflection, String timeStamp) {
     this.id = id;
     this.username = username;
     this.reflection = reflection;
@@ -26,7 +26,7 @@ public final class Comment {
     return this.id;
   }
 
-  public long getTimeStamp() {
+  public String getTimeStamp() {
     return this.timeStamp;
   }
 
