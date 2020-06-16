@@ -44,7 +44,7 @@ public final class RandomQuoteServlet extends HttpServlet {
             + "just as the Jacquard loom weaves flowers and leaves. - Ada Lovelace");
     quotes.add(
         "Sometimes it is the people no one can imagine anything of "
-            + "who do the things no one can imagine. - Alan Turing");
+            + "who do the things no one can imagine. - Alan Turing");*/
     quotes.add("Those who can imagine anything, can create the impossible. - Alan Turing");
   }
 

@@ -9,13 +9,20 @@
       <h2><u>Comments Page</u></h2>
       <div class="form">
         <form action="/commentServlet" method="post">
-            <label for="user">Name:</label><br>
-            <input type="text" name="username" required><br>
-            <label for="reflection">Comment:</label><br>
-            <input type="text" name="reflection" required><br>
-            <input type="submit">
-        </form>
+          <label class="step-white" for="user">Name:</label><br>
+          <input type="text" name="username" required><br>
+          <label class="step-white" for="reflection">Comment:</label><br>
+          <input type="text" name="reflection" required><br>
+          <input type="submit" name="comment-form"><br>
+        </form>  
       </div>  
+      <div class="form">
+        <form action="/commentServlet" method="post">
+          <label class="step-white" for="max-comment">Display:</label><br>
+          <input type="number" name="max-comment" min="1" max="15" required><br>
+          <input type="submit" name="max-form"><br>
+        </form>
+      </div>
       <div id = "comments-container"></div>
   </body> 
 </html>
