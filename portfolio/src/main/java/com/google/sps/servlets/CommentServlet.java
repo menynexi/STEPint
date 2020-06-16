@@ -44,24 +44,15 @@ public class CommentServlet extends HttpServlet {
   private static final String COMMENT_HTML_PARAMETER = "/comments.html";
   private static final String COMMENT_FORM = "comment-form";
   private static final String MAX_FORM = "max-form";
+  private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
-  private String userNameInput;
-  private String reflectionInput;
-  private String dateTime;
-  private long idGiven; 
   private int maxComment = 5; 
-
   public List<Comment> comments;
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    userNameInput = request.getParameter(this.USERNAME_PARAMETER);
-    reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
-    dateTime = getCurrentTimeString();
-
-    if (request.getParameter(COMMENT_FORM) != null && !request.getParameter(COMMENT_FORM).isEmpty()){
-        storeEntities(createEntities());
-
+    if (request.getParameter(COMMENT_FORM) != null && !request.getParameter(COMMENT_FORM).isEmpty()) {
+        storeEntities(createEntities(request));
     } else if (request.getParameter(MAX_FORM) != null && !request.getParameter(MAX_FORM).isEmpty()) {
       setMaxComment(request, request.getParameter(MAXCOMMENT_PARAMETER));
     }
@@ -69,11 +60,11 @@ public class CommentServlet extends HttpServlet {
     response.sendRedirect(COMMENT_HTML_PARAMETER);
   }
 
-  public Entity createEntities(){
+  public Entity createEntities(HttpServletRequest request){
     Entity commentEntity = new Entity(COMMENT_PARAMETER);
-    commentEntity.setProperty(USERNAME_PARAMETER, userNameInput);
-    commentEntity.setProperty(REFLECTION_PARAMETER, reflectionInput);
-    commentEntity.setProperty(DATE_TIME_PARAMETER, dateTime);
+    commentEntity.setProperty(USERNAME_PARAMETER, request.getParameter(this.USERNAME_PARAMETER));
+    commentEntity.setProperty(REFLECTION_PARAMETER, request.getParameter(this.REFLECTION_PARAMETER));
+    commentEntity.setProperty(DATE_TIME_PARAMETER, DATE_TIME_FORMATTER.format(LocalDateTime.now()).toString());
     return commentEntity;
   }
 
@@ -84,9 +75,9 @@ public class CommentServlet extends HttpServlet {
 
   public void setMaxComment(HttpServletRequest request, String maxComment) {
     try {
-        this.maxComment = Integer.parseInt(maxComment);
+      this.maxComment = Integer.parseInt(maxComment);
     } catch (NumberFormatException e) {
-        throw new NumberFormatException("Max comments cannot be converted to int: " + maxComment);
+      throw new NumberFormatException("Max comments cannot be converted to int: " + maxComment);
     }
   }
 
@@ -118,12 +109,6 @@ public class CommentServlet extends HttpServlet {
       commentEntityIndex++;
     }
   }
-
-  public String getCurrentTimeString() {  
-   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-   LocalDateTime now = LocalDateTime.now();
-   return(dtf.format(now).toString());
-  }  
 
   public Comment createCommentFromEntity(Entity commentEntity) {
       return new Comment(
