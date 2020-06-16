@@ -40,15 +40,14 @@ public class CommentServlet extends HttpServlet {
   private static final String MAXCOMMENT_PARAMETER = "max-comment";
   private static final String APPLICATION_JSON_PARAMETER = "application/json;";
   private static final String COMMENT_HTML_PARAMETER = "/comments.html";
-
-  private static final int MAXCOMMENT = 5;//hardcoded soon to be taken in by user input
+  private static final String COMMENT_FORM = "comment-form";
+  private static final String MAX_FORM = "max-form";
 
   private String userNameInput;
   private String reflectionInput;
   private long idGiven;
   private long timestampOfComment; 
-  private int maxComment; 
-  
+  private int maxComment = 5; 
 
   public List<Comment> comments;
 
@@ -58,53 +57,66 @@ public class CommentServlet extends HttpServlet {
     this.reflectionInput = request.getParameter(this.REFLECTION_PARAMETER);
     this.timestampOfComment = System.currentTimeMillis();
 
-    setMaxComment(request);
-    createEntitys();
+    if(request.getParameter(COMMENT_FORM) != null && !request.getParameter(COMMENT_FORM).isEmpty()){
+        createEntitys();
+    }
+    else if(request.getParameter(MAX_FORM) != null && !request.getParameter(MAX_FORM).isEmpty()) {
+      setMaxComment(request, request.getParameter(MAXCOMMENT_PARAMETER));
+    }
+
     response.sendRedirect(COMMENT_HTML_PARAMETER);
   }
 
+  public void createEntitys(){
+    Entity commentEntity = new Entity(COMMENT_PARAMETER);
+    commentEntity.setProperty(USERNAME_PARAMETER, userNameInput);
+    commentEntity.setProperty(REFLECTION_PARAMETER, reflectionInput);
+    commentEntity.setProperty(TIMESTAMP_PARAMETER, timestampOfComment);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+  }
+
+  public void setMaxComment(HttpServletRequest request, String maxComment){
+    try {
+        this.maxComment = Integer.parseInt(maxComment);
+    } catch (NumberFormatException e) {
+        throw new NumberFormatException("Max comments cannot be converted to int: " + maxComment);
+    }
+  }
+
+  public int getMaxComment(){
+      return maxComment;
+  }
+
+  @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     Query query = new Query(COMMENT_PARAMETER).addSort(TIMESTAMP_PARAMETER, SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    displayMaxComments(results, this.maxComment);
-    String json = new Gson().toJson(this.comments);
+    displayMaxComments(results, getMaxComment());
+    String json = new Gson().toJson(comments);
     response.setContentType(APPLICATION_JSON_PARAMETER);
     response.getWriter().println(json);
   }
-
-  public void setMaxComment(HttpServletRequest request){
-    String maxComment = request.getParameter(MAXCOMMENT_PARAMETER);
-    this.maxComment = Integer.parseInt(maxComment);
-  }
-
-
-  public void createEntitys(){
-    Entity commentEntity = new Entity(this.COMMENT_PARAMETER);
-    commentEntity.setProperty(this.USERNAME_PARAMETER, this.userNameInput);
-    commentEntity.setProperty(this.REFLECTION_PARAMETER, this.reflectionInput);
-    commentEntity.setProperty(this.TIMESTAMP_PARAMETER, this.timestampOfComment);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(commentEntity);
-  }
-
+  
   public void displayMaxComments(PreparedQuery results, int maxComment){
-    this.comments = new ArrayList<>();
-    for (Entity commentEntity : results.asIterable()){
-      if(maxComment == 0){
-          break;
-      }
+    comments = new ArrayList<>();
+    for(Entity commentEntity : results.asIterable()){
+      if(maxComment == 0){break;}
+      comments.add(createCommentFromEntity(commentEntity));
+      maxComment--;
+    }
+  }
+
+  public Comment createCommentFromEntity(Entity commentEntity){
       Comment comment = new Comment(
         commentEntity.getKey().getId(), 
         (String) commentEntity.getProperty(USERNAME_PARAMETER), 
         (String) commentEntity.getProperty(REFLECTION_PARAMETER),
         (long) commentEntity.getProperty(TIMESTAMP_PARAMETER)
-        );
-      comments.add(comment);
-      maxComment--;
-    }
+      );
+    return comment;
   }
-
 }
