@@ -33,13 +33,35 @@ function addCommentsToDom(commentList){
     commentContainer.innerHTML = '';
     for (let i = 0; i < commentList.length; i++){
         commentContainer.appendChild(
-            createComment(commentList[i].username, commentList[i].reflection, commentList[i].timeStamp));
+            createComment(commentList[i]));
     }
 }
 
-/** Creates an <li> element containing author: comment. */
-function createComment(user, reflection, timeStamp) {
+/** Creates an <li> element containing comments. */
+function createComment(comment) {
   const liElement = document.createElement('li');
-  liElement.innerText = user + "--> " + reflection + "\n" + timeStamp + "\n\n\n";
+  liElement.className = 'Comment';
+
+  const commentElement = document.createElement('span');
+  commentElement.innerText = comment.username + "--> " + comment.reflection + "\n" + comment.timeStamp + "\n\n\n";
+  
+  const deleteButtonElement = document.createElement('button');
+  deleteButtonElement.innerText = 'Delete';
+  deleteButtonElement.addEventListener('click', () => {
+    deleteComment(comment);
+
+    // Remove the task from the DOM.
+    liElement.remove();
+  });
+
+  liElement.appendChild(commentElement);
+  liElement.appendChild(deleteButtonElement);
   return liElement;
 } 
+
+/** Tells the server to delete the task. */
+function deleteComment(comment) {
+  const params = new URLSearchParams();
+  params.append('id', comment.id);
+  fetch('/delete-comment', {method: 'POST', body: params});
+}
