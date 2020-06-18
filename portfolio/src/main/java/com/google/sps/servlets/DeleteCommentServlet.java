@@ -24,16 +24,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /** Servlet responsible for deleting tasks. */
 @WebServlet("/delete-comment")
 public class DeleteCommentServlet extends HttpServlet {
+    private static final String ID_PARAMETER = "id";
+    private static final String COMMENT_PARAMETER = "Comment";
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    long id = Long.parseLong(request.getParameter("id"));
-
-    Key taskEntityKey = KeyFactory.createKey("Comment", id);
+    long id = Long.parseLong(request.getParameter(ID_PARAMETER));
+    Key commentEntityKey = KeyFactory.createKey(COMMENT_PARAMETER, id);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.delete(taskEntityKey);
+    datastore.delete(commentEntityKey);
   }
 }

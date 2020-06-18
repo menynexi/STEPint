@@ -16,9 +16,23 @@
 * Purpose: recieves HTTP promise response from CommentsServlet.java, 
 * places authors and comments into appropriate html container 
 */
+var COMMENT_SERVLET = '/commentServlet';
+var CONTAINER_SERVLET = 'comments-container';
+var LI_PARAMETER = 'li';
+var SPAN_PARAMETER = 'span';
+var BUTTON_PARAMETER = 'button';
+var DELETE_PARAMETER = 'Delete';
+var COMMENT_PARAMETER = 'Comment';
+var CLICK_PARAMETER = 'click';
+var ID_PARAMETER = 'id';
+var DELETE_SERVLET = '/delete-comment';
+var POST_PARAMETER = 'post';
+var ARROW_PARAMETER = '--> ';
+var SPACE1_PARAMETER = '\n';
+var SPACE3_PARAMETER = '\n\n\n';
 
 function getComment(){
-    const responsePromise = fetch('/commentServlet');
+    const responsePromise = fetch(COMMENT_SERVLET);
     responsePromise.then(handleResponse);
 }
 
@@ -29,9 +43,9 @@ function handleResponse(response){
 
 /** Adds user and reflection to html page **/
 function addCommentsToDom(commentList){
-    const commentContainer = document.getElementById('comments-container');
+    const commentContainer = document.getElementById(CONTAINER_SERVLET);
     commentContainer.innerHTML = '';
-    for (let i = 0; i < commentList.length; i++){
+    for (let i = 0; i < commentList.length; i++) {
         commentContainer.appendChild(
             createComment(commentList[i]));
     }
@@ -39,15 +53,15 @@ function addCommentsToDom(commentList){
 
 /** Creates an <li> element containing comments. */
 function createComment(comment) {
-  const liElement = document.createElement('li');
-  liElement.className = 'Comment';
+  const liElement = document.createElement(LI_PARAMETER);
+  liElement.className = COMMENT_PARAMETER;
 
-  const commentElement = document.createElement('span');
-  commentElement.innerText = comment.username + "--> " + comment.reflection + "\n" + comment.timeStamp + "\n\n\n";
+  const commentElement = document.createElement(SPAN_PARAMETER);
+  commentElement.innerText = comment.username + ARROW_PARAMETER + comment.reflection + SPACE1_PARAMETER + comment.timeStamp + SPACE3_PARAMETER;
   
-  const deleteButtonElement = document.createElement('button');
-  deleteButtonElement.innerText = 'Delete';
-  deleteButtonElement.addEventListener('click', () => {
+  const deleteButtonElement = document.createElement(BUTTON_PARAMETER);
+  deleteButtonElement.innerText = DELETE_PARAMETER;
+  deleteButtonElement.addEventListener(CLICK_PARAMETER, () => {
     deleteComment(comment);
 
     // Remove the task from the DOM.
@@ -62,6 +76,6 @@ function createComment(comment) {
 /** Tells the server to delete the task. */
 function deleteComment(comment) {
   const params = new URLSearchParams();
-  params.append('id', comment.id);
-  fetch('/delete-comment', {method: 'POST', body: params});
+  params.append(ID_PARAMETER, comment.id);
+  fetch(DELETE_SERVLET, {method: POST_PARAMETER, body: params});
 }
