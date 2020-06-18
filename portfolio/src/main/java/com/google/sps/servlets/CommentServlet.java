@@ -52,7 +52,7 @@ public class CommentServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (request.getParameter(COMMENT_FORM) != null && !request.getParameter(COMMENT_FORM).isEmpty()) {
-        storeEntities(createEntities(request));
+      storeEntities(createEntities(request));
     } else if (request.getParameter(MAX_FORM) != null && !request.getParameter(MAX_FORM).isEmpty()) {
       setMaxComment(request, request.getParameter(MAXCOMMENT_PARAMETER));
     }
