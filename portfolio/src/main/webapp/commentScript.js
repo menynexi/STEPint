@@ -56,11 +56,8 @@ function createComment(comment) {
   const liElement = document.createElement(LI_PARAMETER);
   liElement.className = COMMENT_PARAMETER;
 
-  const commentElement = document.createElement(SPAN_PARAMETER);
-  commentElement.innerText = comment.username + ARROW_PARAMETER + comment.reflection + SPACE1_PARAMETER + comment.timeStamp + SPACE3_PARAMETER;
-  
-  const deleteButtonElement = document.createElement(BUTTON_PARAMETER);
-  deleteButtonElement.innerText = DELETE_PARAMETER;
+  const commentElement = addTextToListElement(comment);
+  const deleteButtonElement = addDeleteToListElement(liElement);
   deleteButtonElement.addEventListener(CLICK_PARAMETER, () => {
     deleteComment(comment);
 
@@ -72,6 +69,18 @@ function createComment(comment) {
   liElement.appendChild(deleteButtonElement);
   return liElement;
 } 
+
+function addTextToListElement(comment) {
+  const commentElement = document.createElement(SPAN_PARAMETER);
+  commentElement.innerText = comment.username + ARROW_PARAMETER + comment.reflection + SPACE1_PARAMETER + comment.timeStamp + SPACE3_PARAMETER;
+  return commentElement;
+}
+
+function addDeleteToListElement(liElement){
+  const deleteButtonElement = document.createElement(BUTTON_PARAMETER); 
+  deleteButtonElement.innerText = DELETE_PARAMETER;
+  return deleteButtonElement;
+}
 
 /** Tells the server to delete the task. */
 function deleteComment(comment) {
