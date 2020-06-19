@@ -6,6 +6,7 @@
       <link rel="stylesheet" href="style.css">
   </head>
   <body onload="getComment()">
+<<<<<<< HEAD
       <h2><u>Comments Page</u></h2>
       <div class="form">
         <form action="/commentServlet" method="post">
@@ -24,5 +25,29 @@
         </form>
       </div>
       <div id = "comments-container"></div>
+=======
+
+    <h2><u>Comment Page</u></h2>
+
+    <div class="form">
+      <form action="/comment" method="post">
+        <label class="step-white" for="user">Name:</label><br>
+        <input type="text" name="username" required><br>
+        <label class="step-white" for="reflection">Comment:</label><br>
+        <input type="text" name="reflection" required><br>
+        <input type="submit" name="comment-form"><br>
+      </form>  
+    </div>  
+
+    <div class="form">
+      <form action="/comment" method="post">
+        <label class="step-white" for="max-comment">Display:</label><br>
+        <input type="number" name="max-comment" min="1" max="15" required><br>
+        <input type="submit" name="max-form"><br>
+      </form>
+    </div>
+
+    <div id = "comments-container"></div>
+>>>>>>> cea69e1... fixed maxComment bug on the public server
   </body> 
 </html>
