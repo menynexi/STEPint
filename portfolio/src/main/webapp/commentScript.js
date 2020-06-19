@@ -32,7 +32,7 @@ var SPACE1_PARAMETER = '\n';
 var SPACE3_PARAMETER = '\n\n\n';
 
 function getComment(){
-    const responsePromise = fetch(COMMENT_SERVLET);
+    const responsePromise = fetch('/comment');
     responsePromise.then(handleResponse);
 }
 
