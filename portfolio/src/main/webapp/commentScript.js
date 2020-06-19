@@ -18,7 +18,11 @@
 */
 
 function getComment(){
+<<<<<<< HEAD
     const responsePromise = fetch('/commentServlet');
+=======
+    const responsePromise = fetch('/comment');
+>>>>>>> cea69e1... fixed maxComment bug on the public server
     responsePromise.then(handleResponse);
 }
 
