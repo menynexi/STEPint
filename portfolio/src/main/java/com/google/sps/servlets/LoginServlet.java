@@ -22,24 +22,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**Servlet responsible for haveing users login and logout **/
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+  private final String URL_TO_REDIRECT_AFTER_USER_LOGSOUT = "/login.html";
+  private final String URL_TO_REDIRECT_AFTER_USER_LOGSIN = "/comments.html";
+  private final String TEXT_TO_HTML = "text/html";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
+    response.setContentType(TEXT_TO_HTML);
 
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
-      String urlToRedirectToAfterUserLogsOut = "/login.html";
-      String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
+      String logoutUrl = userService.createLogoutURL(URL_TO_REDIRECT_AFTER_USER_LOGSOUT);
 
       response.getWriter().println("<p>Hello " + userEmail + "!</p>");
       response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
     } else {
-      String urlToRedirectToAfterUserLogsIn = "/login.html";
-      String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+      String loginUrl = userService.createLoginURL(URL_TO_REDIRECT_AFTER_USER_LOGSIN);
 
       response.getWriter().println("<p>Hello stranger.</p>");
       response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");

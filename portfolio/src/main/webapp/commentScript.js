@@ -14,9 +14,9 @@
 
 /*
 * Purpose: recieves HTTP promise response from CommentsServlet.java, 
-* places authors and comments into appropriate html container 
+* creates comment by takeing in username and reflection into appropriate html container 
 */
-var COMMENT_SERVLET = '/commentServlet';
+var COMMENT_SERVLET = '/comment';
 var CONTAINER_SERVLET = 'comments-container';
 var LI_PARAMETER = 'li';
 var SPAN_PARAMETER = 'span';
@@ -32,7 +32,7 @@ var SPACE1_PARAMETER = '\n';
 var SPACE3_PARAMETER = '\n\n\n';
 
 function getComment(){
-    const responsePromise = fetch('/comment');
+    const responsePromise = fetch(COMMENT_SERVLET);
     responsePromise.then(handleResponse);
 }
 
@@ -51,7 +51,7 @@ function addCommentsToDom(commentList){
     }
 }
 
-/** Creates an <li> element containing comments. */
+/** Creates an <li> element containing comments **/
 function createComment(comment) {
   const liElement = document.createElement(LI_PARAMETER);
   liElement.className = COMMENT_PARAMETER;
@@ -61,7 +61,7 @@ function createComment(comment) {
   deleteButtonElement.addEventListener(CLICK_PARAMETER, () => {
     deleteComment(comment);
 
-    // Remove the task from the DOM.
+    // Remove the task from the DOM
     liElement.remove();
   });
 
@@ -82,7 +82,7 @@ function addDeleteToListElement(liElement){
   return deleteButtonElement;
 }
 
-/** Tells the server to delete the task. */
+/** Tells the server to delete the task **/
 function deleteComment(comment) {
   const params = new URLSearchParams();
   params.append(ID_PARAMETER, comment.id);

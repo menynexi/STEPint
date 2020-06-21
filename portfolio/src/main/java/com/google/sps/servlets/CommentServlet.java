@@ -32,7 +32,7 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;  
 
-/** This servet is responsible for the comment data **/
+/** This servet is responsible for creating new comments and storing them as entities **/
 @WebServlet("/comment")
 public class CommentServlet extends HttpServlet {
   private static final String USERNAME_PARAMETER = "username";
@@ -44,6 +44,7 @@ public class CommentServlet extends HttpServlet {
   private static final String COMMENT_HTML_PARAMETER = "/comments.html";
   private static final String COMMENT_FORM = "comment-form";
   private static final String MAX_FORM = "max-form";
+  private static final String MAX_COMMENT_EXCEPTION = "Max comments cannot be converted to int: "; 
   private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 
   private int maxComment = 5; 
@@ -51,24 +52,24 @@ public class CommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    if (request.getParameter(this.COMMENT_FORM) != null && !request.getParameter(this.COMMENT_FORM).isEmpty()) {
+    if (request.getParameter(COMMENT_FORM) != null && !request.getParameter(COMMENT_FORM).isEmpty()) {
       storeEntities(createEntities(request));
-    } else if (request.getParameter(this.MAX_FORM) != null && !request.getParameter(this.MAX_FORM).isEmpty()) {
-      setMaxComment(request, request.getParameter(this.MAXCOMMENT_PARAMETER));
+    } else if (request.getParameter(MAX_FORM) != null && !request.getParameter(MAX_FORM).isEmpty()) {
+      setMaxComment(request, request.getParameter(MAXCOMMENT_PARAMETER));
     }
 
     response.sendRedirect(this.COMMENT_HTML_PARAMETER);
   }
 
   public Entity createEntities(HttpServletRequest request){
-    Entity commentEntity = new Entity(this.COMMENT_PARAMETER);
-    System.out.println(request.getParameter(this.USERNAME_PARAMETER));
-    System.out.println(request.getParameter(this.REFLECTION_PARAMETER));
+    Entity commentEntity = new Entity(COMMENT_PARAMETER);
+    System.out.println(request.getParameter(USERNAME_PARAMETER));
+    System.out.println(request.getParameter(REFLECTION_PARAMETER));
     System.out.println(DATE_TIME_FORMATTER.format(LocalDateTime.now()).toString());
 
-    commentEntity.setProperty(this.USERNAME_PARAMETER, request.getParameter(this.USERNAME_PARAMETER));
-    commentEntity.setProperty(this.REFLECTION_PARAMETER, request.getParameter(this.REFLECTION_PARAMETER));
-    commentEntity.setProperty(this.DATE_TIME_PARAMETER, DATE_TIME_FORMATTER.format(LocalDateTime.now()).toString());
+    commentEntity.setProperty(USERNAME_PARAMETER, request.getParameter(USERNAME_PARAMETER));
+    commentEntity.setProperty(REFLECTION_PARAMETER, request.getParameter(REFLECTION_PARAMETER));
+    commentEntity.setProperty(DATE_TIME_PARAMETER, DATE_TIME_FORMATTER.format(LocalDateTime.now()).toString());
     return commentEntity;
   }
 
@@ -81,7 +82,7 @@ public class CommentServlet extends HttpServlet {
     try {
       this.maxComment = Integer.parseInt(maxComment);
     } catch (NumberFormatException e) {
-      throw new NumberFormatException("Max comments cannot be converted to int: " + maxComment);
+      throw new NumberFormatException(MAX_COMMENT_EXCEPTION + maxComment);
     }
   }
 
@@ -93,16 +94,16 @@ public class CommentServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     displayMaxComments(results);
-    String json = new Gson().toJson(this.comments);
+    String json = new Gson().toJson(comments);
     response.setContentType(this.APPLICATION_JSON_PARAMETER);
     response.getWriter().println(json);
   }
   
   public void displayMaxComments(PreparedQuery results) {
     int commentEntityIndex = 0;  
-    this.comments = new ArrayList<>(); 
+    comments = new ArrayList<>(); 
     for(Entity commentEntity : results.asIterable()){
-      if(commentEntityIndex == this.maxComment){ 
+      if(commentEntityIndex == maxComment){ 
           break;
         }
       comments.add(createCommentFromEntity(commentEntity));
@@ -111,14 +112,11 @@ public class CommentServlet extends HttpServlet {
   }
 
   public Comment createCommentFromEntity(Entity commentEntity) {
-
-      System.out.println(commentEntity.getProperty(this.USERNAME_PARAMETER));
-
       return new Comment(
         commentEntity.getKey().getId(), 
-        commentEntity.getProperty(this.USERNAME_PARAMETER).toString(), 
-        commentEntity.getProperty(this.REFLECTION_PARAMETER).toString(),
-        commentEntity.getProperty(this.DATE_TIME_PARAMETER).toString()
+        commentEntity.getProperty(USERNAME_PARAMETER).toString(), 
+        commentEntity.getProperty(REFLECTION_PARAMETER).toString(),
+        commentEntity.getProperty(DATE_TIME_PARAMETER).toString()
       );
   }
 }
