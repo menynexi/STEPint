@@ -33,7 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;  
 
 /** This servet is responsible for the comment data **/
-@WebServlet("/commentServlet")
+@WebServlet("/comment")
 public class CommentServlet extends HttpServlet {
   private static final String USERNAME_PARAMETER = "username";
   private static final String REFLECTION_PARAMETER = "reflection";
@@ -51,20 +51,24 @@ public class CommentServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    if (request.getParameter(COMMENT_FORM) != null && !request.getParameter(COMMENT_FORM).isEmpty()) {
+    if (request.getParameter(this.COMMENT_FORM) != null && !request.getParameter(this.COMMENT_FORM).isEmpty()) {
       storeEntities(createEntities(request));
-    } else if (request.getParameter(MAX_FORM) != null && !request.getParameter(MAX_FORM).isEmpty()) {
-      setMaxComment(request, request.getParameter(MAXCOMMENT_PARAMETER));
+    } else if (request.getParameter(this.MAX_FORM) != null && !request.getParameter(this.MAX_FORM).isEmpty()) {
+      setMaxComment(request, request.getParameter(this.MAXCOMMENT_PARAMETER));
     }
 
-    response.sendRedirect(COMMENT_HTML_PARAMETER);
+    response.sendRedirect(this.COMMENT_HTML_PARAMETER);
   }
 
   public Entity createEntities(HttpServletRequest request){
-    Entity commentEntity = new Entity(COMMENT_PARAMETER);
-    commentEntity.setProperty(USERNAME_PARAMETER, request.getParameter(this.USERNAME_PARAMETER));
-    commentEntity.setProperty(REFLECTION_PARAMETER, request.getParameter(this.REFLECTION_PARAMETER));
-    commentEntity.setProperty(DATE_TIME_PARAMETER, DATE_TIME_FORMATTER.format(LocalDateTime.now()).toString());
+    Entity commentEntity = new Entity(this.COMMENT_PARAMETER);
+    System.out.println(request.getParameter(this.USERNAME_PARAMETER));
+    System.out.println(request.getParameter(this.REFLECTION_PARAMETER));
+    System.out.println(DATE_TIME_FORMATTER.format(LocalDateTime.now()).toString());
+
+    commentEntity.setProperty(this.USERNAME_PARAMETER, request.getParameter(this.USERNAME_PARAMETER));
+    commentEntity.setProperty(this.REFLECTION_PARAMETER, request.getParameter(this.REFLECTION_PARAMETER));
+    commentEntity.setProperty(this.DATE_TIME_PARAMETER, DATE_TIME_FORMATTER.format(LocalDateTime.now()).toString());
     return commentEntity;
   }
 
@@ -81,28 +85,24 @@ public class CommentServlet extends HttpServlet {
     }
   }
 
-  public int getMaxComment() {
-      return maxComment;
-  }
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Query query = new Query(COMMENT_PARAMETER).addSort(DATE_TIME_PARAMETER, SortDirection.DESCENDING);
+    Query query = new Query(this.COMMENT_PARAMETER).addSort(this.DATE_TIME_PARAMETER, SortDirection.DESCENDING);
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    displayMaxComments(results, getMaxComment());
-    String json = new Gson().toJson(comments);
-    response.setContentType(APPLICATION_JSON_PARAMETER);
+    displayMaxComments(results);
+    String json = new Gson().toJson(this.comments);
+    response.setContentType(this.APPLICATION_JSON_PARAMETER);
     response.getWriter().println(json);
   }
   
-  public void displayMaxComments(PreparedQuery results, int maxComment) {
+  public void displayMaxComments(PreparedQuery results) {
     int commentEntityIndex = 0;  
-    comments = new ArrayList<>(); 
+    this.comments = new ArrayList<>(); 
     for(Entity commentEntity : results.asIterable()){
-      if(commentEntityIndex == maxComment){ 
+      if(commentEntityIndex == this.maxComment){ 
           break;
         }
       comments.add(createCommentFromEntity(commentEntity));
@@ -111,11 +111,14 @@ public class CommentServlet extends HttpServlet {
   }
 
   public Comment createCommentFromEntity(Entity commentEntity) {
+
+      System.out.println(commentEntity.getProperty(this.USERNAME_PARAMETER));
+
       return new Comment(
         commentEntity.getKey().getId(), 
-        commentEntity.getProperty(USERNAME_PARAMETER).toString(), 
-        commentEntity.getProperty(REFLECTION_PARAMETER).toString(),
-        commentEntity.getProperty(DATE_TIME_PARAMETER).toString()
+        commentEntity.getProperty(this.USERNAME_PARAMETER).toString(), 
+        commentEntity.getProperty(this.REFLECTION_PARAMETER).toString(),
+        commentEntity.getProperty(this.DATE_TIME_PARAMETER).toString()
       );
   }
 }
